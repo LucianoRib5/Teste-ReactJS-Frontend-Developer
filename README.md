@@ -15,6 +15,7 @@ Ferramentas utilizadas na construção do projeto:
 - [Typescript](https://www.typescriptlang.org/)
 - [Styled-components](https://styled-components.com/)
 - [Material-UI](https://v4.mui.com/pt/)
+- [Yup](https://github.com/jquense/yup)
 
 ### Pré-requisitos
 
