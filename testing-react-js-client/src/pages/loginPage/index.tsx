@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import * as services from "../../services/apiRequestHttp";
 import { useForm } from "../../hooks/useForm";
 import TextField from '@material-ui/core/TextField';
 import Button from "../../components/button";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import logo from "../../assets/logo.png";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import {
     Main,
     Container,
@@ -22,6 +26,7 @@ const LoginPage: React.FC = () => {
         name: "",
         password: ""
     })
+    const [showPassword, setShowPassword] = useState(false);
 
     const login = (e: React.FormEvent): void => {
         e.preventDefault();
@@ -32,18 +37,22 @@ const LoginPage: React.FC = () => {
             name,
             password
         })
-            .then(res => console.log(res.data))
+            .then(() => {
+                window.location.href = "https://oneblue.io/";
+            })
             .catch(() => toast.error("Usuário(a) ou senha incorreta !"));
+    };
+
+    const handleShowPassword = (): void => {
+        setShowPassword(!showPassword);
     };
 
     return (
         <Main>
             <Container>
-                <ToastContainer theme={"colored"}/>
+                <ToastContainer theme={"colored"} />
                 <ContainerHeader>
-                    <Title>
-                        <h1 style={{color: "#1D93D1"}}>OneBlue</h1>
-                    </Title>
+                    <img src={logo} alt="Logo One Blue" />
                     <Subtitle>
                         <p>Entrar</p>
                     </Subtitle>
@@ -69,7 +78,7 @@ const LoginPage: React.FC = () => {
                             name="password"
                             value={form.password}
                             onChange={onChange}
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             required
                             label="Senha"
                             placeholder="Senha"
@@ -79,6 +88,20 @@ const LoginPage: React.FC = () => {
                             }}
                             variant="outlined"
                             style={{ margin: 8 }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment
+                                        position="end"
+                                        onClick={handleShowPassword}
+                                    >
+                                        {
+                                            showPassword ?
+                                                <VisibilityIcon cursor="pointer" /> :
+                                                <VisibilityOffIcon cursor="pointer" />
+                                        }
+                                    </InputAdornment>
+                                )
+                            }}
                         />
                         <Button
                             buttonName="ENTRAR"
