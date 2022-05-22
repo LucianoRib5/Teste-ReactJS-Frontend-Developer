@@ -1,0 +1,10 @@
+{
+    "name": {
+        "required": "Nome é um campo obrigatório",
+        "matches": "O tipo de dado informado não é válido"
+    },
+    "password": {
+        "required": "Senha é um campo obrigatório",
+        "matches": "A senha deve ter no mínimo 6 caracteres"
+    }
+}
