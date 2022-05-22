@@ -40,14 +40,6 @@ export const ContainerHeader = styled.header`
 	};
 `;
 
-export const Title = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 80%;
-`;
-
 export const Subtitle = styled.div`
 	display: flex;
 	align-items: center;

@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import * as services from "../../services/apiRequestHttp";
-import { useForm } from "../../hooks/useForm";
 import TextField from '@material-ui/core/TextField';
 import Button from "../../components/button";
+import { InputError } from "../../components/InputError";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from "../../assets/logo.png";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { FormData } from "../../types/types";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "../../utils/schema";
+
 import {
     Main,
     Container,
     ContainerHeader,
-    Title, Subtitle,
+    Subtitle,
     ContainerForm,
     Form,
     ContainerFooter,
@@ -22,16 +27,14 @@ import {
 
 const LoginPage: React.FC = () => {
 
-    const { form, onChange } = useForm({
-        name: "",
-        password: ""
-    })
     const [showPassword, setShowPassword] = useState(false);
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+        resolver: yupResolver(schema)
+    });
 
-    const login = (e: React.FormEvent): void => {
-        e.preventDefault();
+    const login = (data: { name: string; password: string; }): void => {
 
-        const { name, password } = form;
+        const { name, password } = data;
 
         services.client.post("/login", {
             name,
@@ -58,16 +61,17 @@ const LoginPage: React.FC = () => {
                     </Subtitle>
                 </ContainerHeader>
                 <ContainerForm>
-                    <Form onSubmit={login}>
+                    <Form onSubmit={handleSubmit(login)}>
                         <TextField
-                            name="name"
-                            value={form.name}
-                            onChange={onChange}
+                            {...register("name")}
                             type="text"
-                            required
                             label="Nome"
                             placeholder="Nome"
                             fullWidth
+                            helperText={
+                                errors?.name?.type
+                                && <InputError type={errors.name.type} field="name"/>
+                            }
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -75,14 +79,15 @@ const LoginPage: React.FC = () => {
                             style={{ margin: 8 }}
                         />
                         <TextField
-                            name="password"
-                            value={form.password}
-                            onChange={onChange}
+                            {...register("password")}
                             type={showPassword ? "text" : "password"}
-                            required
                             label="Senha"
-                            placeholder="Senha"
+                            placeholder="Mínimo 6 caracteres"
                             fullWidth
+                            helperText={
+                                errors?.password?.type
+                                && <InputError type={errors.password.type} field="password"/>
+                            }
                             InputLabelProps={{
                                 shrink: true,
                             }}

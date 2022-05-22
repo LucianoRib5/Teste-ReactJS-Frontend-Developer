@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 interface Inputs{
     name: string,
     password: string

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import * as services from "../../services/apiRequestHttp";
-import { useForm } from "../../hooks/useForm";
 import TextField from '@material-ui/core/TextField';
 import Button from "../../components/button";
+import { InputError } from "../../components/InputError";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,11 @@ import logo from "../../assets/logo.png";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { FormData } from "../../types/types";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "../../utils/schema";
+
 import {
     Main,
     Container,
@@ -23,17 +28,16 @@ import {
 
 const CadasterPage: React.FC = () => {
 
-    const { form, onChange } = useForm({
-        name: "",
-        password: ""
-    });
     const [showPassword, setShowPassword] = useState(false);
+
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+        resolver: yupResolver(schema)
+    });
+
     const navigate = useNavigate();
 
-    const cadasterUser = (e: React.FormEvent): void => {
-        e.preventDefault();
-
-        const { name, password } = form;
+    const cadasterUser = (data: { name: string; password: string; }): void => {
+        const { name, password } = data;
 
         services.client.post("/user/cadaster", {
             name,
@@ -58,16 +62,17 @@ const CadasterPage: React.FC = () => {
                     </Subtitle>
                 </ContainerHeader>
                 <ContainerForm>
-                    <Form onSubmit={cadasterUser}>
+                    <Form onSubmit={handleSubmit(cadasterUser)}>
                         <TextField
-                            name="name"
-                            value={form.name}
-                            onChange={onChange}
+                            {...register("name")}
                             type="text"
-                            required
                             label="Nome"
                             placeholder="Nome"
                             fullWidth
+                            helperText={
+                                errors?.name?.type
+                                && <InputError type={errors.name.type} field="name" />
+                            }
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -75,14 +80,15 @@ const CadasterPage: React.FC = () => {
                             style={{ margin: 8 }}
                         />
                         <TextField
-                            name="password"
-                            value={form.password}
-                            onChange={onChange}
+                            {...register("password")}
                             type={showPassword ? "text" : "password"}
-                            required
                             label="Senha"
-                            placeholder="Senha"
+                            placeholder="Mínimo 6 caracteres"
                             fullWidth
+                            helperText={
+                                errors?.password?.type
+                                && <InputError type={errors.password.type} field="password" />
+                            }
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -103,6 +109,7 @@ const CadasterPage: React.FC = () => {
                                 )
                             }}
                         />
+
                         <Button
                             buttonName="CADASTRAR"
                         />

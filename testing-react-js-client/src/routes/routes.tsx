@@ -3,7 +3,7 @@ import LoginPage from "../pages/loginPage";
 import CadasterPage from "../pages/cadasterPage";
 import GlobalStyle from "../styles/global";
 
-const MainRoutes = () =>{
+const MainRoutes = (): JSX.Element =>{
     return(
         <BrowserRouter>
             <Routes>
