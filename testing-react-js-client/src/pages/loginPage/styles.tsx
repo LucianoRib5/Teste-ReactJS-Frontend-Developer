@@ -25,10 +25,6 @@ export const Container = styled.div`
 		height: 80vh;
 		width: 400px;
     };
-
-    /* @media(min-width: 768px) and (max-width: 1023px){
-        grid-template-columns: repeat(3, 1fr);
-    }; */
 `;
 
 export const ContainerHeader = styled.header`
@@ -38,6 +34,10 @@ export const ContainerHeader = styled.header`
 	justify-content: center;
 	width: 100%;
 	flex-grow: 1;
+
+	img{
+		width: 40%;
+	};
 `;
 
 export const Title = styled.div`

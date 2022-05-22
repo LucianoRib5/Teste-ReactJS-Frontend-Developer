@@ -34,14 +34,10 @@ export const ContainerHeader = styled.header`
 	justify-content: center;
 	width: 100%;
 	flex-grow: 1;
-`;
 
-export const Title = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 80%;
+	img{
+		width: 40%;
+	}
 `;
 
 export const Subtitle = styled.div`
